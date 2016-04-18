@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="30" height="10" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="Beach Tiles" tilewidth="32" tileheight="32">
+  <image source="Beach Tiles.gif" width="256" height="512"/>
+ </tileset>
+ <tileset firstgid="129" name="dg_classm32" tilewidth="32" tileheight="32">
+  <image source="dg_classm32.gif" trans="ffffff" width="256" height="352"/>
+ </tileset>
+ <layer name="Tile Layer 1" width="30" height="10">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC6tiYGCoogNugmJamM2AxR5k+4ixl4EINbj8hMtOWvgXl52k+JUSO3GJ0duv2NxET/sY6BinlKZTQvZSO95oiQEeaC4usAQAAA==
+  </data>
+ </layer>
+</map>
