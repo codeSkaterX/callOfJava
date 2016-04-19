@@ -269,7 +269,8 @@ public class Play extends BasicGameState{
 		}
 		
 		if(enemyTurn==1){
-			enemy1.AI();
+			if(enemy1.getHP()>0)
+				enemy1.AI();
 			/*	while(enemy1.movement > 0){
                 //	if(enemy1.getY()>soldier.getY() && enemy1.checkUp()==false)
 				//		enemy1.moveUp(collisionLayer);
