@@ -24,15 +24,15 @@ public class Play extends BasicGameState{
 	long startTime = 0;
 	long timeElapsed = 0;
 	int tileSize = 32;
-	float signX = 13 * tileSize;
-	float signY = 3 * tileSize;
 	int turns=1;
 	int enemyTurn=0;
 	TiledMap map;
 	FontButton Back;
 	FontButton End;
-	FontButton Read;
+	FontButton Camera;
 	FontButton Attack;
+	FontButton Victory;
+	
 	public int xpos = Mouse.getX();
 	public int ypos = Mouse.getY();
 	UnicodeFont theanodidot;
@@ -47,8 +47,12 @@ public class Play extends BasicGameState{
 	float soldierX;
 	float soldierY;
 	Unit soldier;
-	Unit soldier2;
+	
 	Unit enemy1;
+	Unit enemy2;
+	Unit enemy3;
+	
+	Unit boss;
 	
 	int counter;
 	
@@ -59,6 +63,8 @@ public class Play extends BasicGameState{
 	int unitMovement=0;
 	int unitMovementLeft=0;
 	List<Unit> allUnits;
+	List<Unit> enemies;
+	List<Unit> heroes;
 	
 	Unit temp;
 	Unit show;
@@ -72,12 +78,24 @@ public class Play extends BasicGameState{
 		try {
 			map = new TiledMap(new FileInputStream("res/Map.tmx"), "res");
 			allUnits = new ArrayList<>();
+			enemies = new ArrayList<>();
+			heroes = new ArrayList<>();
 			soldier=new Unit(map, 1, "Guard",7,4,1,6,13,7,1);
-	//		soldier2=new Unit(map, 1, "Guard",7,4,1,6,13,6,1);
-			enemy1 =new Unit(map, 1, "Hero",7,3,1,2,1,7,2);
+			enemy1 =new Unit(map, 1, "Hero",7,3,1,2,1,5,2);
+			enemy2 =new Unit(map, 1, "Hero",7,3,1,2,1,7,2);
+			enemy3 =new Unit(map, 1, "Hero",7,3,1,2,1,9,2);
+			boss   =new Unit(map, 1, "Prince Charles",3,1,2,2,0,6,2);
 			allUnits.add(soldier);
-	//		allUnits.add(soldier2);
 			allUnits.add(enemy1);
+			allUnits.add(enemy2);
+			allUnits.add(enemy3);
+			allUnits.add(boss);
+			enemies.add(enemy1);
+			enemies.add(enemy2);
+			enemies.add(enemy3);
+			enemies.add(boss);
+			heroes.add(soldier);
+		
 			enemyX = enemy1.getX();
 			enemyY = enemy1.getY();
 			soldierX = soldier.getX();
@@ -114,7 +132,7 @@ public class Play extends BasicGameState{
 	            }
 	        };
 	        
-	        Read = new FontButton(gc, theanodidot, "Camera", 500, 365, 100, 60, sbg, 1) {
+	        Camera = new FontButton(gc, theanodidot, "Camera", 500, 365, 100, 60, sbg, 1) {
 	            @Override
 	            public void mouseClicked(int button, int x, int y, int clickCount) {
 	                if (isMouseOver() && sbg.getCurrentStateID() == Play.this.getID() && isEnabled()) {
@@ -137,25 +155,25 @@ public class Play extends BasicGameState{
 	            @Override
 	            public void mouseClicked(int button, int x, int y, int clickCount) {
 	                if (isMouseOver() && sbg.getCurrentStateID() == Play.this.getID() && isEnabled()) {
-	                	System.out.print("HERE");
 	                	timeElapsed=System.nanoTime();
 	        			if(timeElapsed>=startTime+100000000){
+	        				startTime=System.nanoTime();
 				            if(temp.getAttacks()>0){
-				            	for(int i=0; i<allUnits.size(); i++){	
-		        					if(allUnits.get(i).getY()==temp.getY()){
-				                		if(allUnits.get(i).getX()+tileSize==temp.getX() || allUnits.get(i).getX()-tileSize==temp.getX()){
-				                			allUnits.get(i).damage(temp.getDamage());
-				                			if(allUnits.get(i).isAlive() == false){
-				                				allUnits.remove(i);
+				            	for(int i=0; i<enemies.size(); i++){	
+		        					if(enemies.get(i).getY()==temp.getY()){
+				                		if(enemies.get(i).getX()+tileSize==temp.getX() || enemies.get(i).getX()-tileSize==temp.getX()){
+				                			enemies.get(i).damage(temp.getDamage());
+				                			if(enemies.get(i).isAlive() == false){
+				                				enemies.remove(i);
 				                			}
 				                		}
 		        					}
 		        					else{
-			        					if(allUnits.get(i).getX()==temp.getX()){
-					                		if(allUnits.get(i).getX()+tileSize==temp.getX() || allUnits.get(i).getX()-tileSize==temp.getX()){
-					                			allUnits.get(i).damage(temp.getDamage());
-					                			if(allUnits.get(i).isAlive() == false){
-					                				allUnits.remove(i);
+			        					if(enemies.get(i).getX()==temp.getX()){
+					                		if(enemies.get(i).getX()+tileSize==temp.getX() || enemies.get(i).getX()-tileSize==temp.getX()){
+					                			enemies.get(i).damage(temp.getDamage());
+					                			if(enemies.get(i).isAlive() == false){
+					                				enemies.remove(i);
 					                			}
 					                		}
 			        					}
@@ -170,6 +188,22 @@ public class Play extends BasicGameState{
 	                super.mouseClicked(button, x, y, clickCount);
 	            }
 	        };
+	        
+	        Victory = new FontButton(gc, theanodidot, "Accept victory?", 500, 365, 100, 60, sbg, 1) {
+	            @Override
+	            public void mouseClicked(int button, int x, int y, int clickCount) {
+	                if (isMouseOver() && sbg.getCurrentStateID() == Play.this.getID() && isEnabled()) {
+	                	timeElapsed=System.nanoTime();
+	        			if(timeElapsed>=startTime+100000000){
+		                	startTime=System.nanoTime();
+		                	if(enemies.size() == 0)
+		                		System.exit(0);
+	        			}
+	                }
+	                super.mouseClicked(button, x, y, clickCount);
+	            }
+	        };
+	        
 		} catch (FileNotFoundException e) {  
 			e.printStackTrace();
 		}
@@ -220,16 +254,23 @@ public class Play extends BasicGameState{
 		
 		End.render(gc, g);
 		Back.render(gc, g);
-		Read.render(gc, g);
+		Camera.render(gc, g);
 		
-		if(enemy1.getX()+tileSize==soldier.getX() || enemy1.getX()-tileSize==soldier.getX()){
-    		if(enemy1.getY()==soldier.getY())
-    			Attack.render(gc, g);
-    	}
-    	else if(enemy1.getY()+tileSize==soldier.getY() || enemy1.getY()-tileSize==soldier.getY()){
-    		if(enemy1.getX()==soldier.getX())
-    			Attack.render(gc, g);
-    	}
+		if(enemies.size() == 0)
+			Victory.render(gc, g);
+		
+		for(Unit enemy : enemies){
+			for(Unit hero : heroes){
+				if(enemy.getX()+tileSize==hero.getX() || enemy.getX()-tileSize==hero.getX()){
+		    		if(enemy1.getY()==soldier.getY())
+		    			Attack.render(gc, g);
+		    	}
+		    	else if(enemy.getY()+tileSize==hero.getY() || enemy.getY()-tileSize==hero.getY()){
+		    		if(enemy.getX()==hero.getX())
+		    			Attack.render(gc, g);
+		    	}
+			}
+		}
 		
 	}
 	
@@ -245,8 +286,9 @@ public class Play extends BasicGameState{
 				startTime=System.nanoTime();
 				counter = 0;
 				for(Unit selection: allUnits){
-					if(xpos>selection.getX()+camX && xpos<selection.getX()+camX+tileSize){
-						if(ypos>selection.getY()-camY && ypos<selection.getY()-camY+tileSize){
+			//		System.out.println(selection.getName() + " is the name, the x is " + selection.getX() + " and the y is " + selection.getY());
+					if(xpos>=selection.getX()+camX && xpos<=selection.getX()+camX+tileSize){
+						if(ypos>=selection.getY()-camY && ypos<=selection.getY()-camY+tileSize){
 							unitName=selection.getName();
 							unitHP=selection.getHP();
 							unitDamage=selection.getDamage();
@@ -258,7 +300,6 @@ public class Play extends BasicGameState{
 							if(selection.getTeam() == 1){
 								temp = selection;
 							}
-							System.out.println(allUnits.indexOf(show));
 						}
 					}
 			/*		else if(allUnits.size() == allUnits.lastIndexOf(selection) + 1 && counter == 0){
