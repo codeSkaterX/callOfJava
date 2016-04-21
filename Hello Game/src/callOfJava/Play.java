@@ -95,7 +95,7 @@ public class Play extends BasicGameState{
 			enemies.add(enemy3);
 			enemies.add(boss);
 			heroes.add(soldier);
-		
+			
 			enemyX = enemy1.getX();
 			enemyY = enemy1.getY();
 			soldierX = soldier.getX();
@@ -262,7 +262,7 @@ public class Play extends BasicGameState{
 		for(Unit enemy : enemies){
 			for(Unit hero : heroes){
 				if(enemy.getX()+tileSize==hero.getX() || enemy.getX()-tileSize==hero.getX()){
-		    		if(enemy1.getY()==soldier.getY())
+		    		if(enemy.getY()==hero.getY())
 		    			Attack.render(gc, g);
 		    	}
 		    	else if(enemy.getY()+tileSize==hero.getY() || enemy.getY()-tileSize==hero.getY()){
