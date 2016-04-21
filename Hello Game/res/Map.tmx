@@ -37,7 +37,7 @@
  </layer>
  <layer name="collision" width="30" height="15">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC6tiZGCoguJiNFyKJAfDpWgYXZ4cPJD2otuBzqa3vfjcQit7cZlP7fiFsQmZSy17ScWU2osevsSop0U+whfOtEhXVUTYS6v4xWYvrdMzIf+ilxn0tJda9ow0ewFS7XuHCAcAAA==
+   H4sIAAAAAAAAC6tiZGCoguJiNFyKJAfDpWgYXZ4cPJD2otuBzqa3vfjcQit7cZlPqb3FSDQym5C5lNiL7kdSMLX8S4p6WuQjfOFMzXRVjIVN6/jF5QZke2mVngnZi2wPLcoNYuyllj0jzV4ALwb/EQgHAAA=
   </data>
  </layer>
  <layer name="Ground" width="30" height="15">
